@@ -195,7 +195,7 @@ void setup()
     fname.concat(p->value());
 
     request->send(SPIFFS, fname, "text/csv", true);
-    request->redirect("/csv");
+    request->redirect("/files");
   });
 
   server.on("/display_file", HTTP_GET, [](AsyncWebServerRequest *request) {
