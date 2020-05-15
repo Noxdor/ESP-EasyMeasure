@@ -187,7 +187,6 @@ void setup()
     displayFileSystem(response);
 
     request->send(response);
-    last_adress = request->url();
   });
 
   server.on("/download_file", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -196,7 +195,7 @@ void setup()
     fname.concat(p->value());
 
     request->send(SPIFFS, fname, "text/csv", true);
-    request->redirect("/csv");
+    request->redirect("/files");
   });
 
   server.on("/display_file", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -210,7 +209,7 @@ void setup()
 
     SPIFFS.remove(fname);
 
-    request->redirect("/csv");
+    request->redirect("/files");
   });
 
   //Error-Page
