@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hermos-EasyMeasure</title>
+    <style>
+        html {
+            background-color: cornflowerblue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hermos-EasyMeasure Controlcenter</h1>
+    <div>
+        <p>
+            <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+            <span class="dht-labels">Temperature</span>
+            <span id="temperature">%TEMPERATURE%</span>
+            <sup class="units">&deg;C</sup>
+        </p>
+    </div>
+    <div>
+        <p>
+            <i class="fas fa-tint" style="color:#00add6;"></i>
+            <span class="dht-labels">Humidity</span>
+            <span id="humidity">%HUMIDITY%</span>
+            <sup class="units">%</sup>
+        </p>
+        <div style="clear:both;"></div>
+        <p>Temperatur & Feuchtigkeitsverlauf</p>
+        <a href="/grafik">Grafik</a> <a href="/tabelle">Tabelle</a> <a href="/files">Logfile-Verzeichnis</a>
+</body>
+
+</html>

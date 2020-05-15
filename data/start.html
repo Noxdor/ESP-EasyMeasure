@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hermos-EasyMeasure</title>
+</head>
+
+<body>
+  <script>
+    function updateInput(val) {
+      if (val.id == "h") {
+        update = document.getElementById("d");
+        update.value = (val.value / 24).toFixed(2);
+      }
+      if (val.id == "d") {
+        update = document.getElementById("h");
+        update.value = (val.value * 24).toFixed(2);
+      }
+    }
+
+    function checkInterval() {
+      var storage_text = document.querySelector(".text");
+      var button = document.querySelector("#button_passive");
+      if (parseInt(document.querySelector("#min").value * 60) + parseInt(document.querySelector("#sec").value) < 30) {
+        if (document.querySelector("#alert_text_div") == null) {
+          var alert_text_div = document.createElement("div");
+          alert_text_div.id = "alert_text_div";
+          var alert_text = document.createElement("p");
+          alert_text.innerHTML = "Der Messzeitraum muss mindestens 30 Sekunden betragen!";
+          alert_text.style.fontWeight = "bold";
+          alert_text_div.appendChild(alert_text);
+          storage_text.appendChild(alert_text_div);
+          button.disabled = true;
+          button.style.background = "grey";
+        }
+      } else if(document.querySelector("#alert_text_div") != null) {
+        console.log(storage_text);
+        storage_text.removeChild(document.querySelector("#alert_text_div"));
+        button.disabled = false;
+        button.style.background = "#109efc";
+      }
+    }
+
+    function updateStorage() {
+      document.querySelector(".storage").style.visibility = "visible";
+
+      var storage_span = document.querySelector("#max-storage");
+      var interval_sec = parseInt(document.querySelector("#min").value * 60) + parseInt(document.querySelector("#sec").value);
+      var period = document.querySelector("#h").value * 3600;
+      var measure_count = period / interval_sec;
+      storage_span.innerHTML = parseInt(34 * measure_count);
+      storage_span.innerHTML = (storage_span.innerHTML / 100000).toFixed(3);
+      storage_span.innerHTML += " MB";
+    }
+  </script>
+  <style>
+    .time {
+      margin: 1.2em auto;
+    }
+
+    .time label {
+      display: inline-block;
+      width: 5em;
+    }
+
+    .devider {
+      margin: 2em 0 2em 0;
+      height: 2px;
+      width: auto;
+      background-color: black;
+    }
+
+    #filename {
+      margin: 0 auto 0 2.2em;
+    }
+
+    html {
+      text-align: center;
+      background-color: lightblue;
+    }
+
+    .footer {
+      position: relative;
+      bottom: -50px;
+
+    }
+
+    .interval {
+      margin: 1.2em 0;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+      width: 4em;
+      text-align: center;
+    }
+
+    .storage {
+      margin: 0.2em 0 1.5em 0;
+    }
+
+    .button {
+      background-color: #109efc;
+      border-radius: 42px;
+      border: 2px solid #3c6f8f;
+      display: inline-block;
+      cursor: pointer;
+      color: white;
+      font-family: Arial;
+      font-size: 17px;
+      padding: 16px 31px;
+      text-decoration: none;
+    }
+  </style>
+  <h1>Hermos-EasyMeasure</h1>
+  <p>Angeschlossenen Sensor auswählen.</p>
+  <form method="GET">
+    <div>
+      <p>Sensor:</p>
+      <select id="sensor" name="sensor">
+        <option value="22">DHT22/AM2302</option>
+        <option value="21">DHT21/AM2301</option>
+        <option value="12">DHT12</option>
+        <option value="11">DHT11</option>
+      </select>
+    </div>
+    <div class="devider"></div>
+    <div class="mm1">
+      <h3>Messmodus: Zeitraum</h3>
+
+      <div class="file">
+        <h4>Logfiletitel:</h4>
+        <input id="filename" name="filename" type="text" maxlength="23" pattern="([_]|[-]|\w)*" />
+        <label for="filename">.csv</label>
+      </div>
+
+      <div class="values">
+        <h4>Messzeitraum:</h4>
+        <div class="time">
+          <label for="h">in Stunden:</label>
+          <input id="h" name="h" type="number" step="any" min="0" oninput="updateInput(this); updateStorage();" /><br />
+          <label for="d">in Tagen:</label>
+          <input id="d" name="d" type="number" step="any" min="0" oninput="updateInput(this); updateStorage();" />
+        </div>
+      </div>
+
+      <div class="file">
+        <h4>Messhäufigkeit:</h4>
+        <div class="interval">
+          <span>Eine Messung erfolgt alle </span>
+          <input id="min" name="min" type="number" step="1" min="0" value="5"
+            oninput="updateStorage(); checkInterval();" />
+          <span> Minuten und </span>
+          <input id="sec" name="sec" type="number" step="1" min="0" max="59" value="0"
+            oninput="updateStorage(); checkInterval();" />
+          <span> Sekunden.</span>
+        </div>
+      </div>
+
+      <div class="storage" style="visibility: hidden;">
+        <div class="text">
+          <span>Die CSV-Datei wird maximal </span>
+          <span id="max-storage"></span>
+          <span> belegen. Überprüfe den freien Speicher und </span>
+          <a href="/files">lösche</a><span> gegenfalls alte Logfiles.</span>
+        </div>
+      </div>
+
+    </div>
+    <input id="button_passive" class="button" type="submit" value="Start passive Messung" formaction="/startup" />
+    <div class="devider"></div>
+    <div class="mm2">
+      <h3>Messmodus: Aktiv</h3>
+      <input class="button" type="submit" value="Start aktive Messung" formaction="/aktiv" />
+    </div>
+  </form>
+
+  <div class="footer">
+    <p>
+      <span class="fs-storage">Gesamter Speicher: </span>
+      <span id="storage_total">%STORAGE_TOTAL%</span>
+      <sup class="units"> MB</sup>
+      <span class="fs-storage">Belegter Speicher: </span>
+      <span id="storage_used">%STORAGE_USED%</span>
+      <sup class="units"> MB</sup>
+      <span class="fs-storage">Freier Speicher: </span>
+      <span id="storage_free">%STORAGE_FREE%</span>
+      <sup class="units"> MB</sup>
+    </p>
+  </div>
+</body>
+
+</html>

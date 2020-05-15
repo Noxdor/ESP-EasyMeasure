@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hermos-EasyMeasure</title>
+    <script type="text/javascript"
+        src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1','packages':['corechart']}]}"></script>
+    <script type="text/javascript"> google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Zeit / UTC', 'Temperatur', 'Feuchtigkeit'],
+            ]);
+            var options = { title: 'Verlauf', vAxes: { 0: { viewWindowMode: 'explicit', gridlines: { color: 'black' }, format: "##.##�C" }, 1: { gridlines: { color: 'transparent' }, format: "##,##%" }, }, series: { 0: { targetAxisIndex: 0 }, 1: { targetAxisIndex: 1 }, }, curveType: 'none', legend: { position: 'bottom' } }; var chart = new google.visualization.LineChart(document.getElementById('curve_chart')); chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+    <font color="#000000">
+        <body bgcolor="#d0d0f0">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+            <h1>WLAN Logger für Lufttemperatur und Feuchtigkeit</h1><a href="/">Startseite</a><BR><BR>
+            <div id="curve_chart" style="width: 600px; height: 400px"></div>
+            <FONT SIZE=-2><BR>Aufrufz&auml;hler=3 - Freies RAM=7424 - Max. Datenpunkte=3233<BR>
+        </body>
+</html>

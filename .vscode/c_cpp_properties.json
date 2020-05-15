@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:\\Users\\lguderian\\Documents\\Arduino\\libraries\\**",
+                "C:\\Users\\lguderian\\Documents\\Arduino\\hardware\\espressif\\esp32\\**",
+                "C:\\Users\\lguderian\\Documents\\Arduino\\libraries\\ErriezDS1302-master\\**",
+                "C:\\Users\\lguderian\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\1.0.4\\**",
+                "C:\\Users\\lguderian\\AppData\\Local\\Arduino15\\packages\\esp32\\tools\\**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "intelliSenseMode": "msvc-x64",
+            "forcedInclude": []
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <title>Hermos-EasyMeasure</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <!-- Bootstrap core CSS -->
+  <link href="/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/css/dataTables.bootstrap.css" rel="stylesheet" />
+  <style>
+    html {
+      margin: 0 2em;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Hermos-EasyMeasure</h1>
+  <a href="/main">Startseite</a>
+
+  <div id="table-container"></div>
+  <br /><br />
+
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.csv.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="/js/dataTables.bootstrap.js"></script>
+  <script type="text/javascript" src="/js/csv_to_html_table.js"></script>
+
+  <script type="text/javascript">
+    CsvToHtmlTable.init({
+        csv_path: '/display_file',
+        element: 'table-container', 
+        allow_download: false,
+        csv_options: {separator: ','},
+        datatables_options: {"paging": false}
+      });
+  </script>
+</body>
+</html>
