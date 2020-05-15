@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hermos-EasyMeasure</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <style>
+        html {
+            text-align: center;
+            background-color: cornflowerblue;
+            display: inline-block;
+        }
+
+        p {
+            font-size: 2.0rem;
+        }
+
+        .units {
+            font-size: 1.2rem;
+        }
+
+        .dht-labels {
+            font-size: 1.5rem;
+            vertical-align: middle;
+            padding-bottom: 15px;
+        }
+
+        .devider {
+            margin: 2em 0 2em 0;
+            height: 2px;
+            width: auto;
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hermos-EasyMeasure ActiveControl</h1>
+    <div>
+        <p>
+            <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+            <span class="dht-labels">Temperature</span>
+            <span id="temperature">%TEMPERATURE%</span>
+            <sup class="units">&deg;C</sup>
+        </p>
+    </div>
+    <div>
+        <p>
+            <i class="fas fa-tint" style="color:#00add6;"></i>
+            <span class="dht-labels">Humidity</span>
+            <span id="humidity">%HUMIDITY%</span>
+            <sup class="units">%</sup>
+        </p>
+    </div>
+    <div class="devider"></div>
+    <div>
+        <p>Messung erfolgt alle 5 Sekunden.</p>
+    </div>
+    <script>
+        setInterval(function () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("temperature").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "/temperature", true);
+            xhttp.send();
+        }, 5000);
+        setInterval(function () {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("humidity").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "/humidity", true);
+            xhttp.send();
+        }, 5000);
+    </script>
+</body>
+
+</html>
