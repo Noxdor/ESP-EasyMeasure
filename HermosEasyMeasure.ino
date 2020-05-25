@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #if defined(ARDUINO_ARCH_ESP32)
 #define DS1302_CLK_PIN 16
 #define DS1302_IO_PIN 17
@@ -195,8 +194,9 @@ void setup()
     AsyncWebParameter *p = request->getParam("fname");
     String fname = "/csv/";
     fname.concat(p->value());
-
-    request->send(SPIFFS, fname, "text/csv", true);
+    File file = SPIFFS.open(fname);
+    if(file.size()>10000) request->send(SPIFFS, fname, "text/csv", false);
+    else request->send(SPIFFS, fname, "text/csv", true);
     request->redirect("/files");
   });
 
@@ -452,3 +452,4 @@ bool checkInterval() {
   else {
     return false;
   }
+}
