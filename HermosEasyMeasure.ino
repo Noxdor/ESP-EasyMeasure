@@ -108,6 +108,7 @@ void setup()
 
   //Setup redirects
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    if (on==true) request->redirect("/main")
     request->send(SPIFFS, "/start.html", "text/html", false, processor);
     last_adress = request->url();
   });
