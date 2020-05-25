@@ -7,31 +7,86 @@
     <title>Hermos-EasyMeasure</title>
     <style>
         html {
-            background-color: cornflowerblue;
+            background-color: lightblue;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            font-weight: 500;
+            font-size: 36px;
+        }
+
+        .content {
+            margin: 0 0.5em;
+        }
+
+        .button {
+            background-color: #109efc;
+            text-align: center;
+            border-radius: 42px;
+            border: 2px solid #3c6f8f;
+            display: inline-block;
+            cursor: pointer;
+            color: white;
+            font-family: Arial;
+            font-size: 17px;
+            padding: 8px 22px;
+            text-decoration: none;
+            width: 150px;
+            margin: 0.5em 0;
+        }
+
+        @media(min-width: 550px) {
+            .all {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .contents {
+                display: flex;
+                flex-direction: column;
+                margin-right: 1.2em;
+            }
+
+            .content {
+                float: left;
+            }
+
+            .float-right {
+                float: left;
+                display: flex;
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>Hermos-EasyMeasure Controlcenter</h1>
-    <div>
-        <p>
-            <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
-            <span class="dht-labels">Temperature</span>
-            <span id="temperature">%TEMPERATURE%</span>
-            <sup class="units">&deg;C</sup>
-        </p>
+    <h1>Hermos-EasyMeasure - Passiver Messmodus</h1>
+    <div class="all">
+        <div class="contents">
+            <div class="content">
+                <p>
+                    <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+                    <span class="dht-labels">Temperatur: </span>
+                    <span id="temperature">%TEMPERATURE%</span>
+                    <sup class="units">&deg;C</sup>
+                </p>
+            </div>
+            <div class="content">
+                <p>
+                    <i class="fas fa-tint" style="color:#00add6;"></i>
+                    <span class="dht-labels">Luftfeuchtigkeit: </span>
+                    <span id="humidity">%HUMIDITY%</span>
+                    <sup class="units">%</sup>
+                </p>
+            </div>
+        </div>
+        <div class="float-right">
+            <a class="button" href="/tabelle">Tabelle</a>
+            <a class="button" href="/files">Logfile-Verzeichnis</a>
+        </div>
     </div>
-    <div>
-        <p>
-            <i class="fas fa-tint" style="color:#00add6;"></i>
-            <span class="dht-labels">Humidity</span>
-            <span id="humidity">%HUMIDITY%</span>
-            <sup class="units">%</sup>
-        </p>
-        <div style="clear:both;"></div>
-        <p>Temperatur & Feuchtigkeitsverlauf</p>
-        <a href="/grafik">Grafik</a> <a href="/tabelle">Tabelle</a> <a href="/files">Logfile-Verzeichnis</a>
 </body>
 
 </html>

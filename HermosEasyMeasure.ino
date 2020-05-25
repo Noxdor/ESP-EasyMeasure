@@ -416,9 +416,9 @@ static void printData(File& log)
 void displayFileSystem(AsyncResponseStream *response)
 {
   response->print("<!DOCTYPE html> <html lang=\"de\"> <head> <title>Hermos-EasyMeasure</title> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=yes\" />");
-  response->print("<style>.flex_container {width: 350px;display: flex;flex-wrap: wrap;}.delete, .filename, .size {text-align: center;display: inline-block;flex: 1 0 21%;min-width: 105px;margin: 5px 0;padding: 0 5px;height: 50px;text-align: center;");
+  response->print("<style>html{background-color: lightblue;font-family: Arial, Helvetica, sans-serif;}h1{font-weight: 500;font-size: 36px;}.flex_container {width: 350px;display: flex;flex-wrap: wrap;}.delete, .filename, .size {text-align: center;display: inline-block;flex: 1 0 21%;min-width: 105px;margin: 5px 0;padding: 0 5px;height: 50px;text-align: center;");
   response->print("vertical-align: middle;line-height: 50px;}.delete {background-color: #FF6666;}.size {background-color: #7F7FFF;}.filename {background-color: #7FBF7F;}.size p {margin: 0;}</style>");
-  response->print("<h1>Dateien</h1>");
+  response->print("<h1>Hermos-EasyMeasure - Dateien</h1>");
   response->print("<a href=\"");
   response->print(last_adress);
   response->print("\">Zurück</a>");
