@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #if defined(ARDUINO_ARCH_ESP32)
 #define DS1302_CLK_PIN 16
 #define DS1302_IO_PIN 17
@@ -451,4 +452,3 @@ bool checkInterval() {
   else {
     return false;
   }
-}
