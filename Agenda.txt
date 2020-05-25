@@ -1,3 +1,4 @@
+1.) jquery.dataTables.min.js neu hochladen
 4.) LCD Display anschließen
 6.) Technik in Box verbasteln
 7.) Power supply
