@@ -10,6 +10,7 @@
 #include <DHT.h>
 #include <SPIFFS.h>
 #include <ErriezDS1302.h>
+#include <vector>
 
 //Access Point and Server
 const char *ssid = "HermosLogger";
@@ -134,6 +135,9 @@ void setup()
     Serial.println(" Sekunden");
     Serial.println(logfile_name);
 
+    //setup esp light sleep time trigger
+    esp_sleep_enable_timer_wakeup(sec_per_interval*1000000);
+
     File log = SPIFFS.open(logfile_name, FILE_WRITE);
     if(log) {
       log.println("date, time, temperature, humidity");
@@ -166,7 +170,7 @@ void setup()
   });
 
   server.on("/tabelle", HTTP_GET, [](AsyncWebServerRequest *request) {
-     last_adress = "/tabelle";
+    last_adress = "/tabelle";
     Serial.println("Tabelle geöffnet.");
     request->send(SPIFFS, "/tabelle.html", "text/html", false);
   });
@@ -194,10 +198,15 @@ void setup()
     AsyncWebParameter *p = request->getParam("fname");
     String fname = "/csv/";
     fname.concat(p->value());
-    File file = SPIFFS.open(fname);
-    if(file.size()>10000) request->send(SPIFFS, fname, "text/csv", false);
-    else request->send(SPIFFS, fname, "text/csv", true);
-    request->redirect("/files");
+    File file = SPIFFS.open(fname, FILE_READ);
+    AsyncResponseStream *response = request->beginResponseStream("text/csv");
+    response->addHeader("Server","ESP Async Web Server");
+    response->addHeader("Content-Disposition", "attachment");
+    response->addHeader("filename", p->value());
+    while(file.available()) {
+      response->print(char(file.read()));
+    }
+    request->send(response);
   });
 
   server.on("/display_file", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -275,6 +284,7 @@ void loop()
 {
   if (on && checkInterval())
   {
+    //Serial.println(esp_light_sleep_start());
     readDHTTemperature();
     readDHTHumidity();
     File log = SPIFFS.open(logfile_name, FILE_APPEND);
@@ -298,6 +308,7 @@ void loop()
       }
     }
   }
+  delay(50);
 }
 // Replaces placeholder with DHT values
 String processor(const String &var)
