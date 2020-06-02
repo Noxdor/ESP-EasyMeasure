@@ -13,6 +13,9 @@
       background-color: lightblue;
       margin: 0 2em;
     }
+    body {
+      padding: 0.2em 3em 0
+    }
   </style>
 </head>
 
@@ -33,12 +36,13 @@
 
   <script type="text/javascript">
     CsvToHtmlTable.init({
-        csv_path: '/display_file',
-        element: 'table-container', 
-        allow_download: false,
-        csv_options: {separator: ','},
-        datatables_options: {"paging": true}
-      });
+      csv_path: '/display_file',
+      element: 'table-container',
+      allow_download: false,
+      csv_options: { separator: ',' },
+      datatables_options: { "paging": true }
+    });
   </script>
 </body>
+
 </html>
