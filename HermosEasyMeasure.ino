@@ -5,6 +5,7 @@
 #endif
 
 #include <WiFi.h>
+#include <esp_wifi.h>
 #include <ESPAsyncWebServer.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
@@ -32,6 +33,9 @@ TaskHandle_t Blink;
 DHT *sensor_dht;
 float last_temp = 0.00;
 float last_hum = 0.00;
+
+//Sleep toggle button
+#define TOGGLE_BUTTON_PIN GPIO_NUM_23
 
 //RTC (DS1302)
 DS1302 rtc = DS1302(DS1302_CLK_PIN, DS1302_IO_PIN, DS1302_CE_PIN);
@@ -109,7 +113,8 @@ void setup()
 
   //Setup redirects
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    if (on==true) request->redirect("/main");
+    if (on == true)
+      request->redirect("/main");
     request->send(SPIFFS, "/start.html", "text/html", false, processor);
     last_adress = request->url();
   });
@@ -135,20 +140,26 @@ void setup()
     Serial.println(" Sekunden");
     Serial.println(logfile_name);
 
-    //setup esp light sleep time trigger
-    esp_sleep_enable_timer_wakeup(sec_per_interval*1000000);
+    //setup esp light sleep time trigger & button as wakeup source
+    esp_sleep_enable_timer_wakeup(sec_per_interval * 1000000 - 20); //20 us as safety
+    gpio_pulldown_en(TOGGLE_BUTTON_PIN);
+    gpio_wakeup_enable(TOGGLE_BUTTON_PIN, GPIO_INTR_HIGH_LEVEL);
+    esp_sleep_enable_gpio_wakeup();
 
     File log = SPIFFS.open(logfile_name, FILE_WRITE);
-    if(log) {
+    if (log)
+    {
       log.println("date, time, temperature, humidity");
       log.close();
-    } else {
+    }
+    else
+    {
       Serial.println("Konnte keinen Header in die CSV schreiben.");
     }
-    
+
     on = true;
     rtc.getDateTime(&dt);
-    next_measurement = (millis()/1000)+sec_per_interval;
+    next_measurement = (millis() / 1000) + sec_per_interval;
 
     sensor_dht->begin();
 
@@ -200,10 +211,11 @@ void setup()
     fname.concat(p->value());
     File file = SPIFFS.open(fname, FILE_READ);
     AsyncResponseStream *response = request->beginResponseStream("text/csv");
-    response->addHeader("Server","ESP Async Web Server");
+    response->addHeader("Server", "ESP Async Web Server");
     response->addHeader("Content-Disposition", "attachment");
     response->addHeader("filename", p->value());
-    while(file.available()) {
+    while (file.available())
+    {
       response->print(char(file.read()));
     }
     request->send(response);
@@ -284,14 +296,13 @@ void loop()
 {
   if (on && checkInterval())
   {
-    //Serial.println(esp_light_sleep_start());
     readDHTTemperature();
     readDHTHumidity();
     File log = SPIFFS.open(logfile_name, FILE_APPEND);
     if (log)
     {
       printData(log);
-      next_measurement=(millis()/1000)+sec_per_interval;
+      next_measurement = (millis() / 1000) + sec_per_interval;
       Serial.print("Nächster Messzeitpunkt (epoch): ");
       Serial.println(next_measurement);
       log.close();
@@ -306,6 +317,20 @@ void loop()
         digitalWrite(LED_PIN, LOW);
         delay(500);
       }
+    }
+    esp_wifi_stop();
+    esp_light_sleep_start();
+    Serial.print("Aufwachgrund: ");
+    Serial.println(esp_sleep_get_wakeup_cause());
+    if (esp_sleep_get_wakeup_cause() == ESP_SLEEP_WAKEUP_GPIO)
+    {
+      /* Serial.print("Timer Grundnummer: ");
+      Serial.println(ESP_SLEEP_WAKEUP_TIMER);
+      Serial.print("GPIO Grundnummer: ");
+      Serial.println(ESP_SLEEP_WAKEUP_GPIO); */
+      Serial.println("Durch Druckknopf aufgeweckt.");
+      esp_wifi_start();
+      next_measurement = (millis() / 1000 ) + 60*3;
     }
   }
   delay(50);
@@ -334,7 +359,8 @@ String processor(const String &var)
   {
     return String((SPIFFS.totalBytes() - SPIFFS.usedBytes()) / 1000000.000);
   }
-  else if (var == "LOGFILE") {
+  else if (var == "LOGFILE")
+  {
     return String(logfile_name);
   }
   return String();
@@ -374,7 +400,7 @@ String readDHTHumidity()
   }
 }
 
-static void printData(File& log)
+static void printData(File &log)
 {
   DS1302_DateTime dt;
   char buf[32];
@@ -454,11 +480,14 @@ void displayFileSystem(AsyncResponseStream *response)
   response->print("</div></body></html>");
 }
 
-bool checkInterval() {
-  if(next_measurement<=(millis()/1000)) {
+bool checkInterval()
+{
+  if (next_measurement <= (millis() / 1000))
+  {
     return true;
   }
-  else {
+  else
+  {
     return false;
   }
 }
