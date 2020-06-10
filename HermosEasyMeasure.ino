@@ -342,7 +342,6 @@ String processor(const String &var)
 
 String readDHTTemperature()
 {
-  //if (!isnan(sensor_dht)) {
   float t = sensor_dht->readTemperature();
   last_temp = t;
 
@@ -356,7 +355,6 @@ String readDHTTemperature()
     Serial.println(t);
     return String(t);
   }
-  // }
 }
 
 String readDHTHumidity()
