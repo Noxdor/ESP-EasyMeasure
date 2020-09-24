@@ -14,8 +14,8 @@
 #include <vector>
 
 //Access Point and Server
-const char *ssid = "HermosLogger";
-const char *password = "HERMOSSYSTEMS";
+const char *ssid = "HermosEasyMeasure";
+const char *password = "H3RMOZSYSTEMS/";
 const IPAddress apIP(192, 168, 1, 1);
 AsyncWebServer server(80);
 String last_adress = "/";

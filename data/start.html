@@ -82,12 +82,6 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    .footer {
-      position: relative;
-      bottom: -50px;
-
-    }
-
     .interval {
       margin: 1.2em 0;
     }
@@ -133,6 +127,19 @@
         <option value="12">DHT12</option>
         <option value="11">DHT11</option>
       </select>
+    </div>
+    <div class="footer">
+      <p>
+        <span class="fs-storage">Gesamter Speicher: </span>
+        <span id="storage_total">%STORAGE_TOTAL%</span>
+        <sup class="units"> MB</sup>
+        <span class="fs-storage">Belegter Speicher: </span>
+        <span id="storage_used">%STORAGE_USED%</span>
+        <sup class="units"> MB</sup>
+        <span class="fs-storage">Freier Speicher: </span>
+        <span id="storage_free">%STORAGE_FREE%</span>
+        <sup class="units"> MB</sup>
+      </p>
     </div>
     <div class="devider"></div>
     <div class="mm1">
@@ -185,19 +192,6 @@
     </div>
   </form>
 
-  <div class="footer">
-    <p>
-      <span class="fs-storage">Gesamter Speicher: </span>
-      <span id="storage_total">%STORAGE_TOTAL%</span>
-      <sup class="units"> MB</sup>
-      <span class="fs-storage">Belegter Speicher: </span>
-      <span id="storage_used">%STORAGE_USED%</span>
-      <sup class="units"> MB</sup>
-      <span class="fs-storage">Freier Speicher: </span>
-      <span id="storage_free">%STORAGE_FREE%</span>
-      <sup class="units"> MB</sup>
-    </p>
-  </div>
 </body>
 
 </html>
