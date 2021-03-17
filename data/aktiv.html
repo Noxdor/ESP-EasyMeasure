@@ -65,6 +65,7 @@
         <p>Messung erfolgt alle 5 Sekunden.</p>
     </div>
     <script>
+        const update_time = 5000;
         setInterval(function () {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -74,7 +75,7 @@
             };
             xhttp.open("GET", "/temperature", true);
             xhttp.send();
-        }, 5000);
+        }, update_time);
         setInterval(function () {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -84,7 +85,7 @@
             };
             xhttp.open("GET", "/humidity", true);
             xhttp.send();
-        }, 5000);
+        }, update_time);
     </script>
 </body>
 
